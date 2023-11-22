@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Scanner;
 import tools.InputFromKeyboard;
 
+
 public class BookManager {
 
     private final Scanner scanner;
@@ -31,7 +32,7 @@ public class BookManager {
             String authorFirstname = scanner.nextLine();
             System.out.print("Enter lastname: ");
             String authorLastname = scanner.nextLine();
-            book.addAuthor(new Author(authorFirstname, authorLastname));
+            book.getAuthors().add(new Author(authorFirstname, authorLastname));
         }
         System.out.print("Enter quantity copy: ");
         book.setQuantity(InputFromKeyboard.inputNumberFromRange(1, 10));
@@ -48,22 +49,22 @@ public class BookManager {
                     i+1,
                     books.get(i).getTitle(),
                     books.get(i).getPublishedYear(),
-                    Arrays.toString(books.get(i).getAuthors()),
+                    Arrays.toString(books.get(i).getAuthors().toArray()),
                     books.get(i).getCount()
             );
             count++;
         }
         return count;
     }
-    
-    public void addCopyOfExistingBookInLibrary(List<Book> books){
+
+    public void addCopyOfExistingBookInLibrary(List<Book> books) {
         this.pirntListBooks(books);
-        System.out.print("Enter the book number to add copies: ");
+        System.out.println("Enter the book number to add copies: ");
         int bookNumber = InputFromKeyboard.inputNumberFromRange(1, books.size());
-        System.out.print("Enter quantity to add: ");
+        System.out.println("How many copies of the book should I add?: ");
         int copyNumber = InputFromKeyboard.inputNumberFromRange(1, 10);
         books.get(bookNumber-1).setQuantity(books.get(bookNumber-1).getQuantity() + copyNumber);
         books.get(bookNumber-1).setCount(books.get(bookNumber-1).getCount() + copyNumber);
-        
     }
+    
 }
