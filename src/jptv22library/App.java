@@ -10,6 +10,7 @@ import java.util.List;
 import managers.BookManager;
 import managers.ReaderManager;
 import java.util.Scanner;
+import managers.DatabaseManager;
 import managers.SaveManager;
 import tools.InputFromKeyboard;
 
@@ -22,10 +23,12 @@ public class App {
     private final ReaderManager readerManager;
     private HistoryManager historyManager;
     private SaveManager saveManager;
+    private final DatabaseManager databaseManager;
     
     public App() {
         this.scanner = new Scanner(System.in);
         this.saveManager = new SaveManager();
+        this.databaseManager = new DatabaseManager();
         this.books = saveManager.loadBooks();
         this.readers = saveManager.loadReaders();
         this.histories = saveManager.loadHistories();
@@ -62,12 +65,14 @@ public class App {
                     repeat = false;
                     break;
                 case 1:
-                    books.add(bookManager.addBook());
-                    saveManager.saveBooks(this.books);//save to file
+//                    books.add(bookManager.addBook());
+//                    saveManager.saveBooks(this.books);//save to file
+                    databaseManager.saveBook(bookManager.addBook()); // save to base
                     break;
                 case 2:
-                    readers.add(readerManager.addReader());
-                    saveManager.saveReaders(readers);
+//                    readers.add(readerManager.addReader());
+//                    saveManager.saveReaders(readers);
+                    databaseManager.saveReader(readerManager.addReader());
                     break;
                 case 3:
                     bookManager.pirntListBooks(books);
