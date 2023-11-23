@@ -8,8 +8,8 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import static java.util.Map.entry;
+//import java.util.Map.Entry;
+//import static java.util.Map.entry;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 import tools.InputFromKeyboard;
@@ -88,33 +88,33 @@ public class HistoryManager {
         return countReadingBooks;
     }
 
-    public void printRankingOfBooksBeingRead(List<History> histories) {
-        Map<Book,Integer> mapBooks = new HashMap<>();
-        for (int i = 0; i < histories.size(); i++) {
-            Book book = histories.get(i).getBook();
-            if(mapBooks.containsKey(book)){
-                mapBooks.put(book,mapBooks.get(book) + 1);
-            }else{
-                mapBooks.put(book,1);
-            }
-        }
-        Map<Book, Integer> sortedMap = mapBooks.entrySet()
-            .stream()
-            .sorted(Map.Entry.<Book, Integer>comparingByValue().reversed())
-            .collect(Collectors.toMap(
-                Map.Entry::getKey, 
-                Map.Entry::getValue, 
-                (oldValue, newValue) -> oldValue, 
-                LinkedHashMap::new));
-        System.out.println("Ranking of books being read:");
-        int n=1;
-        for (Map.Entry entry : sortedMap.entrySet()) {
-            System.out.printf("%d. %s: %d%n",
-                    n,
-                    ((Book)entry.getKey()).getTitle(),
-                    entry.getValue()
-            );
-            n++;
-        }
-    }   
+//    public void printRankingOfBooksBeingRead(List<History> histories) {
+//        Map<Book,Integer> mapBooks = new HashMap<>();
+//        for (int i = 0; i < histories.size(); i++) {
+//            Book book = histories.get(i).getBook();
+//            if(mapBooks.containsKey(book)){
+//                mapBooks.put(book,mapBooks.get(book) + 1);
+//            }else{
+//                mapBooks.put(book,1);
+//            }
+//        }
+//        Map<Book, Integer> sortedMap = mapBooks.entrySet()
+//            .stream()
+//            .sorted(Map.Entry.<Book, Integer>comparingByValue().reversed())
+//            .collect(Collectors.toMap(
+//                Map.Entry::getKey, 
+//                Map.Entry::getValue, 
+//                (oldValue, newValue) -> oldValue, 
+//                LinkedHashMap::new));
+//        System.out.println("Ranking of books being read:");
+//        int n=1;
+//        for (Map.Entry entry : sortedMap.entrySet()) {
+//            System.out.printf("%d. %s: %d%n",
+//                    n,
+//                    ((Book)entry.getKey()).getTitle(),
+//                    entry.getValue()
+//            );
+//            n++;
+//        }
+//    }   
 }

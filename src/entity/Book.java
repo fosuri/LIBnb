@@ -1,13 +1,31 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
+import javax.persistence.OneToMany;
+
+
+@Entity
 public class Book implements Serializable{
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Basic(fetch = FetchType.EAGER, optional = false)
+    @Column()
     private String title;
     private int publishedYear;
-    private Author[] authors = new Author[0];
+    @OneToMany
+    private List<Author> authors = new ArrayList<>();
     private int quantity; //Всего закупленных в библиотеку экземпляров
     private int count; //экземпляров в наличии.
 
@@ -21,27 +39,7 @@ public class Book implements Serializable{
         this.count = count;
     }
 
-    
-    @Override
-    public String toString() {
-        return "Book{" 
-                + "title=" + title 
-                + ", publishedYear=" + publishedYear 
-                + ", authors=" + Arrays.toString(authors) 
-                + ", quantity=" + quantity
-                + ", count=" + count
-                + '}';
-    }
-
-    public void addAuthor(Author author) {
-        /*
-         * 1. создать копию athors с дополнительной пустой ячейкой
-         * 2. добавить в пустую ячейку ссылку на author полученый из параметра
-         */
-        this.authors = Arrays.copyOf(this.authors, this.authors.length + 1);
-        this.authors[this.authors.length-1] = author;
-    }
-
+   
     public int getQuantity() {
         return quantity;
     }
@@ -74,22 +72,32 @@ public class Book implements Serializable{
         this.publishedYear = publishedYear;
     }
 
-    public Author[] getAuthors() {
+    public List<Author> getAuthors() {
         return authors;
     }
 
-    public void setAuthors(Author[] authors) {
+    public void setAuthors(List<Author> authors) {
         this.authors = authors;
+    }
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     @Override
     public int hashCode() {
         int hash = 7;
+        hash = 53 * hash + Objects.hashCode(this.id);
         hash = 53 * hash + Objects.hashCode(this.title);
         hash = 53 * hash + this.publishedYear;
-        hash = 53 * hash + Arrays.deepHashCode(this.authors);
+        hash = 53 * hash + Objects.hashCode(this.authors);
         hash = 53 * hash + this.quantity;
-        //hash = 53 * hash + this.count;
+        hash = 53 * hash + this.count;
         return hash;
     }
 
@@ -108,19 +116,28 @@ public class Book implements Serializable{
         if (this.publishedYear != other.publishedYear) {
             return false;
         }
-        if (this.quantity != other.quantity) {
-            return false;
-        }
-//        if (this.count != other.count) {
-//            return false;
-//        }
         if (!Objects.equals(this.title, other.title)) {
             return false;
         }
-        return Arrays.deepEquals(this.authors, other.authors);
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        if (!Objects.equals(this.authors, other.authors)) {
+            return false;
+        }
+        return true;
     }
 
-    
+    @Override
+    public String toString() {
+        return "Book{" 
+                + "id=" + id 
+                + ", title=" + title 
+                + ", publishedYear=" + publishedYear 
+                + ", authors=" + authors 
+                + ", quantity=" + quantity 
+                + ", count=" + count + '}';
+    }
     
     
 }
