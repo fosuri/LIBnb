@@ -31,15 +31,7 @@ public class BookManager {
         System.out.print("Enter published year: ");
         book.setPublishedYear(InputFromKeyboard.inputNumberFromRange(1800, 2050));
         authorManager.printListAuthors();
-        System.out.print("List of authors");
-        List<Author> authors = authorFacade.findAll();
-        for (int i = 0; i < authors.size(); i++) {
-            System.out.printf("%d. %s. %s. %n",
-                    authors.get(i).getId(),
-                    authors.get(i).getFirstname(),
-                    authors.get(i).getLastname()
-            );
-        }
+
         System.out.println("If the authors are not in the list, press 0, if they are in the list, press 1. ");
         int isAuthor = InputFromKeyboard.inputNumberFromRange(0, 1);
         if(isAuthor == 0){
@@ -54,7 +46,7 @@ public class BookManager {
         List<Author> listauthorsBook = new ArrayList<>();
         for (int i = 0; i < authorsBook.length; i++) {
             if(authorsBook[i] !=0){
-                listauthorsBook.add(authorFacade.find((long)authorsBook[i]));
+                listauthorsBook.add(authorManager.findAuthorById((long)authorsBook[i]));
             }
         }
         book.setAuthors(listauthorsBook);
