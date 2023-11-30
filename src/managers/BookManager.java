@@ -31,18 +31,22 @@ public class BookManager {
         System.out.print("Enter published year: ");
         book.setPublishedYear(InputFromKeyboard.inputNumberFromRange(1800, 2050));
         authorManager.printListAuthors();
-
-        System.out.println("If the authors are not in the list, press 0, if they are in the list, press 1. ");
-        int isAuthor = InputFromKeyboard.inputNumberFromRange(0, 1);
-        if(isAuthor == 0){
-            //add author to the dbase
-            authorManager.createAuthor();
-            authorManager.printListAuthors();
-        }
+        do{
+            System.out.println("If the authors are not in the list, press 0, if they are in the list, press 1. ");
+            int isAuthor = InputFromKeyboard.inputNumberFromRange(0, 1);
+            if(isAuthor == 0){
+                //add author to the dbase
+                authorManager.createAuthor();
+                authorManager.printListAuthors();
+            }else{
+                break;
+            }
+        }while(true);
+        System.out.print("How many authors: ");
         int countAuthors = InputFromKeyboard.inputNumberFromRange(1, 5);
         int authorBookId = 0;
         for (int i = 0; i < countAuthors; i++) {
-            System.out.println("Select author number ("+i+1+ "): ");
+            System.out.println("Select author number to add to the book ("+(i+1)+ "): ");
             authorBookId = InputFromKeyboard.inputNumberFromRange(1, null);
             book.getAuthors().add(authorManager.findAuthorById((long)authorBookId));
         }
