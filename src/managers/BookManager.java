@@ -36,20 +36,17 @@ public class BookManager {
         int isAuthor = InputFromKeyboard.inputNumberFromRange(0, 1);
         if(isAuthor == 0){
             //add author to the dbase
+            authorManager.createAuthor();
+            authorManager.printListAuthors();
         }
         int countAuthors = InputFromKeyboard.inputNumberFromRange(1, 5);
-        Integer[] authorsBook = new Integer[5];
+        int authorBookId = 0;
         for (int i = 0; i < countAuthors; i++) {
-            System.out.println("Select author number "+i+1);
-            authorsBook[i] = InputFromKeyboard.inputNumberFromRange(1, countAuthors);
+            System.out.println("Select author number ("+i+1+ "): ");
+            authorBookId = InputFromKeyboard.inputNumberFromRange(1, null);
+            book.getAuthors().add(authorManager.findAuthorById((long)authorBookId));
         }
-        List<Author> listauthorsBook = new ArrayList<>();
-        for (int i = 0; i < authorsBook.length; i++) {
-            if(authorsBook[i] !=0){
-                listauthorsBook.add(authorManager.findAuthorById((long)authorsBook[i]));
-            }
-        }
-        book.setAuthors(listauthorsBook);
+        
         System.out.print("Enter quantity copy: ");
         book.setQuantity(InputFromKeyboard.inputNumberFromRange(1, 10));
         book.setCount(book.getQuantity());
@@ -57,12 +54,13 @@ public class BookManager {
         bookFacade.create(book);
     }
 
-    public int pirntListBooks(List<Book> books) {
+    public int pirntListBooks() {
+        List<Book> books = bookFacade.findAll();
         int count = 0;
         System.out.println("List books: ");
         for (int i = 0; i < books.size(); i++) {
             System.out.printf("%d. %s. %d. %s. In stock: %d%n",
-                    i+1,
+                    books.get(i).getId(),
                     books.get(i).getTitle(),
                     books.get(i).getPublishedYear(),
                     Arrays.toString(books.get(i).getAuthors().toArray()),
@@ -73,14 +71,25 @@ public class BookManager {
         return count;
     }
     
-    public void addCopyOfExistingBookInLibrary(List<Book> books){
-        this.pirntListBooks(books);
+    public void addCopyOfExistingBookInLibrary(){
+        this.pirntListBooks();
         System.out.print("Enter the book number to add copies: ");
-        int bookNumber = InputFromKeyboard.inputNumberFromRange(1, books.size());
+        int bookNumber = InputFromKeyboard.inputNumberFromRange(1, null);
         System.out.print("Enter quantity to add: ");
         int copyNumber = InputFromKeyboard.inputNumberFromRange(1, 10);
-        books.get(bookNumber-1).setQuantity(books.get(bookNumber-1).getQuantity() + copyNumber);
-        books.get(bookNumber-1).setCount(books.get(bookNumber-1).getCount() + copyNumber);
+        Book book = bookFacade.find((long)bookNumber);
+        book.setQuantity(book.getQuantity() + copyNumber);
+        book.setCount(book.getCount() + copyNumber);
+        bookFacade.edit(book);
         
     }
+
+    public Book getById(int id) {
+        return bookFacade.find((long)id);
+    }
+    
+    public void update(Book book){
+        bookFacade.edit(book);
+    }
+    
 }

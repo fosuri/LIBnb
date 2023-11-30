@@ -36,6 +36,6 @@ public class AuthorManager {
         }        
     }
     public Author findAuthorById(Long id){
-        return AuthorFacade.
+        return authorFacade.find((long)id);
     }
 }
