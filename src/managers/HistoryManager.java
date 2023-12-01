@@ -20,7 +20,8 @@ public class HistoryManager {
     private final Scanner scanner;
     private final ReaderManager readerManager;
     private final BookManager bookManager;
-    private final HistoryFacade  historyFacade;
+    private final HistoryFacade historyFacade;
+   
 
     public HistoryManager(Scanner scanner) {
         this.scanner = scanner;
@@ -33,26 +34,22 @@ public class HistoryManager {
     public void giveBookToReader() {
         System.out.println("------------- Give the book to the reader ----------------");
         History history = new History();
-        
         readerManager.pirntListReaders();
         System.out.print("Enter number reader: ");
         int readerNumber = InputFromKeyboard.inputNumberFromRange(1, null);
         history.setReader(readerManager.getById(readerNumber));
-
         bookManager.pirntListBooks();
         System.out.print("Enter number book: ");
         int bookId = InputFromKeyboard.inputNumberFromRange(1, null);
-        Book book = bookManager.getById(bookId);   
-        if(book.getCount()> 0){
+        Book book = bookManager.getById(bookId);
+        if(book.getCount() > 0){
             history.setBook(bookManager.getById(bookId));
             book.setCount(book.getCount()-1);
             bookManager.update(book);
             history.setGiveBookToReaderDate(new GregorianCalendar().getTime());
             historyFacade.create(history);
-            
         }else{
-            System.out.println("All books are read");
-            
+            System.out.println("All copies of the book are in hand");
         }
     }
 
@@ -69,53 +66,24 @@ public class HistoryManager {
         if(history.getBook().getCount() < history.getBook().getQuantity()){
             history.setReturnBook(new GregorianCalendar().getTime());
             history.getBook().setCount(history.getBook().getCount()+1);
-            System.out.printf("Book \"%s\" returned%n",history.getBook().getTitle());
+            System.out.printf("The book \"%s\" returned%n",history.getBook().getTitle());
         }else{
-            System.out.println("All books are already in stock"); 
+            System.out.println("All copies of the book in the library"); 
         }
     }
 
     public int printListReadingBooks() {
-        List<History> historiesToReadingBooks = historyFacade.findHistoryToReadingBooks();
+        List<History> historiesToReadigBooks = historyFacade.findHistoryToReadingBooks();
         System.out.println("List reading books:");
-        for (int i = 0; i < historiesToReadingBooks.size(); i++) {
-                System.out.printf("%d. %s. reading %s %s%n",
-                        i+1,
-                        historiesToReadingBooks.get(i).getBook().getTitle(),
-                        historiesToReadingBooks.get(i).getReader().getFirstname(),
-                        historiesToReadingBooks.get(i).getReader().getLastname()
+        for (int i = 0; i < historiesToReadigBooks.size(); i++) {
+            System.out.printf("%d. %s. reading %s %s%n",
+                    i+1,
+                    historiesToReadigBooks.get(i).getBook().getTitle(),
+                    historiesToReadigBooks.get(i).getReader().getFirstname(),
+                    historiesToReadigBooks.get(i).getReader().getLastname()
             );
         }
-        return historiesToReadingBooks.size();
+        return historiesToReadigBooks.size();
     }
-
-//    public void printRankingOfBooksBeingRead(List<History> histories) {
-//        Map<Book,Integer> mapBooks = new HashMap<>();
-//        for (int i = 0; i < histories.size(); i++) {
-//            Book book = histories.get(i).getBook();
-//            if(mapBooks.containsKey(book)){
-//                mapBooks.put(book,mapBooks.get(book) + 1);
-//            }else{
-//                mapBooks.put(book,1);
-//            }
-//        }
-//        Map<Book, Integer> sortedMap = mapBooks.entrySet()
-//            .stream()
-//            .sorted(Map.Entry.<Book, Integer>comparingByValue().reversed())
-//            .collect(Collectors.toMap(
-//                Map.Entry::getKey, 
-//                Map.Entry::getValue, 
-//                (oldValue, newValue) -> oldValue, 
-//                LinkedHashMap::new));
-//        System.out.println("Ranking of books being read:");
-//        int n=1;
-//        for (Map.Entry entry : sortedMap.entrySet()) {
-//            System.out.printf("%d. %s: %d%n",
-//                    n,
-//                    ((Book)entry.getKey()).getTitle(),
-//                    entry.getValue()
-//            );
-//            n++;
-//        }
-//    }   
+    
 }

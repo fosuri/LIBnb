@@ -41,7 +41,6 @@ public class ReaderManager {
                     readers.get(i).getPhone()
             );
             count++;
-            
         }
         return count;
     }

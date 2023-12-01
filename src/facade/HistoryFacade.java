@@ -8,40 +8,41 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 
-public class HistoryFacade {
+public class HistoryFacade extends AbstractFacade<History>{
     EntityManager em;
 
     public HistoryFacade() {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("JPTV22LibPU");
+        super(History.class);
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("JPTV22LibraryPU");
         this.em = emf.createEntityManager();
     }
-    public void create(History history){
-        em.getTransaction().begin();
-            em.persist(history);
-        em.getTransaction().commit();
-    }
-    public void edit(History history){
-        em.getTransaction().begin();
-            em.merge(history);
-        em.getTransaction().commit();
-    }
-    public History find(Long id){
-        return em.find(History.class, id);
-    }
-    public List<History> findAll(){
-        return em.createQuery("SELECT author FROM History history").getResultList();
-    }
+
 
     public List<History> findHistoryToReadingBooks() {
         try {
-            return em.createQuery("SELECT histoty FROM History hisroty WHERE history.returnBook = null").getResultList();
+//            return em.createQuery("SELECT history FROM History history WHERE history.returnBook = null")
+//                .getResultList();
+            CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+            CriteriaQuery<History> criteriaQuery = criteriaBuilder.createQuery(History.class);
+            Root<History> historyRoot = criteriaQuery.from(History.class);
+            criteriaQuery.select(historyRoot);
+            criteriaQuery.where(criteriaBuilder.isNull(historyRoot.get("returnBook")));
             
+            List<History> result = em.createQuery(criteriaQuery).getResultList();
+        
         } catch (Exception e) {
             return new ArrayList<>();
         }
-    }
+    }   
     
+    @Override
+    protected EntityManager getEntityManager() {
+        return em;
+    }
 }
 

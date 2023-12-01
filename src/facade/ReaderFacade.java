@@ -9,10 +9,10 @@ import javax.persistence.Persistence;
 
 
 public class ReaderFacade {
-    EntityManager em;
+     EntityManager em;
 
     public ReaderFacade() {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("JPTV22LibPU");
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("JPTV22LibraryPU");
         this.em = emf.createEntityManager();
     }
     public void create(Reader reader){
@@ -26,11 +26,10 @@ public class ReaderFacade {
         em.getTransaction().commit();
     }
     public Reader find(Long id){
-        return em.find(Reader.class, id);
+        return em.find(Reader.class,id);
     }
     public List<Reader> findAll(){
-        return em.createQuery("SELECT author FROM Reader reader").getResultList();
+        return em.createQuery("SELECT reader FROM Reader reader").getResultList();
     }
-    
 }
 

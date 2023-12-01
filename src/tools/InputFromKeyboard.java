@@ -1,5 +1,6 @@
 package tools;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class InputFromKeyboard {
@@ -38,16 +39,34 @@ public class InputFromKeyboard {
         }while(repeat);
         return number;
     }
-    
-    public static String inputSympolYesOrNO(){
+
+    public static String inputSymbolYesOrNo() {
         Scanner scanner = new Scanner(System.in);
-        String sybmol = "n";
         do{
-            sybmol = scanner.nextLine();
-            if(sybmol.equals("n") || sybmol.equals("y")){
-                return sybmol;
+            String symbol = scanner.nextLine();
+            if(symbol.equals("n") || symbol.equals("y")){
+                return symbol;
             }
-            System.out.println("For continue press \"y\", exit press \"n\": ");
+            System.out.print("For continue press \"y\", exit press \"n\": ");
         }while(true);
     }
+    public static int inputNumberFromRange(List<Integer> listId){
+        Scanner scanner = new Scanner(System.in);
+        int number = -1;
+        do{
+            try {
+                number = scanner.nextInt();
+                scanner.nextLine();
+                if(!listId.contains(number)){
+                    continue;
+                }
+                return number;
+            } catch (Exception e) {
+                scanner.nextLine();
+            }
+        }while(true);
+        
+    }
+    
+    
 }

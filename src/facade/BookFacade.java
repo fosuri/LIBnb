@@ -11,7 +11,7 @@ public class BookFacade {
     EntityManager em;
 
     public BookFacade() {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("JPTV22LibPU");
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("JPTV22LibraryPU");
         this.em = emf.createEntityManager();
     }
     public void create(Book book){
@@ -25,7 +25,7 @@ public class BookFacade {
         em.getTransaction().commit();
     }
     public Book find(Long id){
-        return em.find(Book.class, id);
+        return em.find(Book.class,id);
     }
     public List<Book> findAll(){
         return em.createQuery("SELECT book FROM Book book").getResultList();

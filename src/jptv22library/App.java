@@ -44,7 +44,7 @@ public class App {
             System.out.print("Enter number task: ");
             int task = InputFromKeyboard.inputNumberFromRange(0,9);
             System.out.println("Selected task is "+task+". Are you sure? Y/N");
-            String continueRun = InputFromKeyboard.inputSympolYesOrNO();
+            String continueRun = InputFromKeyboard.inputSymbolYesOrNo();
             if(continueRun.equals("n")){
                 continue;
             }

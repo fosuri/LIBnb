@@ -32,25 +32,24 @@ public class BookManager {
         book.setPublishedYear(InputFromKeyboard.inputNumberFromRange(1800, 2050));
         authorManager.printListAuthors();
         do{
-            System.out.println("If the authors are not in the list, press 0, if they are in the list, press 1. ");
+            System.out.println("If there are no authors in the list, press 0, if there are - 1");
             int isAuthor = InputFromKeyboard.inputNumberFromRange(0, 1);
             if(isAuthor == 0){
-                //add author to the dbase
+                //добавить автора в базу
                 authorManager.createAuthor();
                 authorManager.printListAuthors();
             }else{
                 break;
             }
         }while(true);
-        System.out.print("How many authors: ");
+        System.out.print("Number of authors in the book: ");
         int countAuthors = InputFromKeyboard.inputNumberFromRange(1, 5);
         int authorBookId = 0;
         for (int i = 0; i < countAuthors; i++) {
-            System.out.println("Select author number to add to the book ("+(i+1)+ "): ");
-            authorBookId = InputFromKeyboard.inputNumberFromRange(1, null);
+            System.out.println("Select a number to add to the book (author "+(i+1)+"): ");
+            authorBookId=InputFromKeyboard.inputNumberFromRange(1, null);
             book.getAuthors().add(authorManager.findAuthorById((long)authorBookId));
         }
-        
         System.out.print("Enter quantity copy: ");
         book.setQuantity(InputFromKeyboard.inputNumberFromRange(1, 10));
         book.setCount(book.getQuantity());
@@ -74,25 +73,24 @@ public class BookManager {
         }
         return count;
     }
-    
-    public void addCopyOfExistingBookInLibrary(){
+
+    public void addCopyOfExistingBookInLibrary() {
         this.pirntListBooks();
-        System.out.print("Enter the book number to add copies: ");
+        System.out.println("Enter the book number to add copies: ");
         int bookNumber = InputFromKeyboard.inputNumberFromRange(1, null);
-        System.out.print("Enter quantity to add: ");
+        System.out.println("How many copies of the book should I add?: ");
         int copyNumber = InputFromKeyboard.inputNumberFromRange(1, 10);
         Book book = bookFacade.find((long)bookNumber);
         book.setQuantity(book.getQuantity() + copyNumber);
         book.setCount(book.getCount() + copyNumber);
         bookFacade.edit(book);
-        
     }
 
-    public Book getById(int id) {
-        return bookFacade.find((long)id);
+    public Book getById(int bookId) {
+        return bookFacade.find((long)bookId);
     }
-    
-    public void update(Book book){
+
+    public void update(Book book) {
         bookFacade.edit(book);
     }
     
